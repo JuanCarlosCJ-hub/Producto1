@@ -3,8 +3,7 @@ import { View, StyleSheet, Image, Alert, TouchableOpacity, Text } from 'react-na
 
 const styles = StyleSheet.create({
   boton: {
-    height:150,
-    left:30,
+    left:'10%',
    justifyContent: 'center',
     alignItems: 'flex-start',
 
@@ -16,24 +15,26 @@ const styles = StyleSheet.create({
     fontSize: 18
   },
   boton2:{
-  left:250,
-  height:150,
+  left:'100%',
+  height:'50%',
    justifyContent: 'center',
     alignItems: 'flex-end',
   },
   textoBoton2:{
 
     color:'#ffffff',
-    fontSize: 18
+    fontSize: 18,
+
   },
 fila:{
 
-  flex:1,
+  bottom:'80%',
   flexDirection: 'row',
   alignItems: 'center',
   borderColor: '#ffffff',
-  borderBottomWidth: 1,
-  backgroundColor: '#912a23'
+  borderBottomWidth:1,
+  backgroundColor: '#912a23',
+  justifyContent: 'flex-start'
 }
 
 })
