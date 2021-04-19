@@ -1,10 +1,14 @@
 import React from 'react';
 import { View, StyleSheet, Image, Alert, TouchableOpacity, Text } from 'react-native';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
+import { useNavigation } from '@react-navigation/native';
+
+
 
 const styles = StyleSheet.create({
   boton: {
-    height:150,
-    left:30,
+    left:'10%',
    justifyContent: 'center',
     alignItems: 'flex-start',
 
@@ -13,27 +17,29 @@ const styles = StyleSheet.create({
   textoBoton:{
 
     color:'#ffffff',
-    fontSize: 18
+    fontSize: 14
   },
   boton2:{
-  left:250,
-  height:150,
+  left:'90%',
+  height:'50%',
    justifyContent: 'center',
     alignItems: 'flex-end',
   },
   textoBoton2:{
 
     color:'#ffffff',
-    fontSize: 18
+    fontSize: 14,
+
   },
 fila:{
 
-  flex:1,
+  bottom:'80%',
   flexDirection: 'row',
   alignItems: 'center',
   borderColor: '#ffffff',
-  borderBottomWidth: 1,
-  backgroundColor: '#912a23'
+  borderBottomWidth:1,
+  backgroundColor: '#912a23',
+  justifyContent: 'flex-start'
 }
 
 })
@@ -45,6 +51,7 @@ export class Menu extends React.Component{
 
   }
   render(){
+
     return(
 <View>
 
@@ -56,7 +63,7 @@ export class Menu extends React.Component{
 
 
 
-  <TouchableOpacity style={styles.boton2}  onPress={this.viewMsg}>
+  <TouchableOpacity style={styles.boton2}  onPress={() => navigate('NuevoReto')}>
    <Text style={styles.textoBoton2}>NUEVO RETO</Text>
    </TouchableOpacity>
 </View>
@@ -78,4 +85,6 @@ export class Menu extends React.Component{
       </View>
     )
   }
+
+
 }
