@@ -1,8 +1,9 @@
 import React from 'react';
-import { View, StyleSheet, Image, Alert, TouchableOpacity, Text } from 'react-native';
+import { View, StyleSheet, Image, Alert, TouchableOpacity, Text, Button } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { useNavigation } from '@react-navigation/native';
+
 
 
 
@@ -17,7 +18,8 @@ const styles = StyleSheet.create({
   textoBoton:{
 
     color:'#ffffff',
-    fontSize: 14
+    fontSize: 14,
+
   },
   boton2:{
   left:'90%',
@@ -32,24 +34,38 @@ const styles = StyleSheet.create({
 
   },
 fila:{
-
-  bottom:'80%',
+  height:'25%',
+  bottom:'100%',
   flexDirection: 'row',
   alignItems: 'center',
   borderColor: '#ffffff',
   borderBottomWidth:1,
-  backgroundColor: '#912a23',
-  justifyContent: 'flex-start'
+  backgroundColor: '#1590F2',
+  justifyContent: 'space-between'
 }
 
 })
 
+function GoToButton({ screenName }) {
+  const navigation = useNavigation();
+
+  return (
+    <Button
+      title={` ${screenName}`}
+      onPress={() => navigation.navigate(screenName)}
+
+    />
+  );
+}
 
 export class Menu extends React.Component{
+
   viewMsg = ()=>{
       Alert.alert("Has apretado el boton");
 
   }
+
+
   render(){
 
     return(
@@ -57,28 +73,20 @@ export class Menu extends React.Component{
 
 <View style={styles.fila}>
 
-<TouchableOpacity style={styles.boton} onPress={this.viewMsg}>
-  <Text style={styles.textoBoton}>EVOLUCIÓN </Text>
-  </TouchableOpacity>
+<GoToButton style={styles.textoBoton} screenName="Evolucion" />
 
 
+<GoToButton style={styles.boton2} screenName="NuevoReto" />
 
-  <TouchableOpacity style={styles.boton2}  onPress={() => navigate('NuevoReto')}>
-   <Text style={styles.textoBoton2}>NUEVO RETO</Text>
-   </TouchableOpacity>
 </View>
 
 
 <View style={styles.fila}>
 
-<TouchableOpacity style={styles.boton} onPress={this.viewMsg}>
-  <Text style={styles.textoBoton}>PERFIL </Text>
-  </TouchableOpacity>
+<GoToButton style={styles.boton} screenName="Perfil" />
 
 
-<TouchableOpacity style={styles.boton2} onPress={this.viewMsg}>
-    <Text style={styles.textoBoton2}>        CONTACTAR</Text>
- </TouchableOpacity>
+<GoToButton style={styles.boton2} screenName="Contactar" />
 
 
 </View>
