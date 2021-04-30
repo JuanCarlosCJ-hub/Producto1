@@ -25,7 +25,7 @@ const styles = StyleSheet.create({
   left:'90%',
   height:'50%',
    justifyContent: 'center',
-    alignItems: 'flex-end',
+    alignItems: 'center',
   },
   textoBoton2:{
 
@@ -35,13 +35,13 @@ const styles = StyleSheet.create({
   },
 fila:{
   height:'25%',
-  bottom:'100%',
+  bottom:'90%',
   flexDirection: 'row',
   alignItems: 'center',
   borderColor: '#ffffff',
   borderBottomWidth:1,
   backgroundColor: '#1590F2',
-  justifyContent: 'space-between'
+  justifyContent: 'center'
 }
 
 })
@@ -73,7 +73,7 @@ export class Menu extends React.Component{
 
 <View style={styles.fila}>
 
-<GoToButton style={styles.textoBoton} screenName="Evolucion" />
+
 
 
 <GoToButton style={styles.boton2} screenName="NuevoReto" />
@@ -82,11 +82,6 @@ export class Menu extends React.Component{
 
 
 <View style={styles.fila}>
-
-<GoToButton style={styles.boton} screenName="Perfil" />
-
-
-<GoToButton style={styles.boton2} screenName="Contactar" />
 
 
 </View>

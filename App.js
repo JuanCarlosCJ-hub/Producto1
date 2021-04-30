@@ -37,6 +37,13 @@ function NuevoReto({ navigation }){
     </View>
   )
 }
+function DetalleReto({ navigation }){
+  return(
+    <View>
+    <Text>El reto ira aqui </Text>
+    </View>
+  )
+}
 function Perfil({ navigation }){
   return(
     <View>
@@ -96,11 +103,26 @@ export default function App() {
 
         })}/>
         <Stack.Screen
-        name="NuevoReto"
+        name="Nuevo Reto"
         component={NuevoReto}
         options={({navigation})=>({
 
-          title: 'Nuevo Reto',
+          title: 'NuevoReto',
+          headerRight: () => (
+             <Button
+                   onPress={() => navigation.navigate(Home)}
+               title="Inicio"
+               color="#122082"
+             />
+           ),
+
+        })}/>
+        <Stack.Screen
+        name="Detalle Reto"
+        component={DetalleReto}
+        options={({navigation})=>({
+
+          title: 'Detalle Reto',
           headerRight: () => (
              <Button
                    onPress={() => navigation.navigate(Home)}
