@@ -1,10 +1,15 @@
 import React from 'react';
-import { View, StyleSheet, Image, Alert, TouchableOpacity, Text } from 'react-native';
+import { View, StyleSheet, Image, Alert, TouchableOpacity, Text, Button } from 'react-native';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
+import { useNavigation } from '@react-navigation/native';
+
+
+
 
 const styles = StyleSheet.create({
   boton: {
-    height:150,
-    left:30,
+    left:'10%',
    justifyContent: 'center',
     alignItems: 'flex-start',
 
@@ -13,69 +18,76 @@ const styles = StyleSheet.create({
   textoBoton:{
 
     color:'#ffffff',
-    fontSize: 18
+    fontSize: 14,
+
   },
   boton2:{
-  left:250,
-  height:150,
+  left:'90%',
+  height:'50%',
    justifyContent: 'center',
-    alignItems: 'flex-end',
+    alignItems: 'center',
   },
   textoBoton2:{
 
     color:'#ffffff',
-    fontSize: 18
+    fontSize: 14,
+
   },
 fila:{
-
-  flex:1,
+  height:'25%',
+  bottom:'90%',
   flexDirection: 'row',
   alignItems: 'center',
   borderColor: '#ffffff',
-  borderBottomWidth: 1,
-  backgroundColor: '#912a23'
+  borderBottomWidth:1,
+  backgroundColor: '#1590F2',
+  justifyContent: 'center'
 }
 
 })
 
+function GoToButton({ screenName }) {
+  const navigation = useNavigation();
+
+  return (
+    <Button
+      title={` ${screenName}`}
+      onPress={() => navigation.navigate(screenName)}
+
+    />
+  );
+}
 
 export class Menu extends React.Component{
+
   viewMsg = ()=>{
       Alert.alert("Has apretado el boton");
 
   }
+
+
   render(){
+
     return(
 <View>
 
 <View style={styles.fila}>
 
-<TouchableOpacity style={styles.boton} onPress={this.viewMsg}>
-  <Text style={styles.textoBoton}>EVOLUCIÓN </Text>
-  </TouchableOpacity>
 
 
 
-  <TouchableOpacity style={styles.boton2}  onPress={this.viewMsg}>
-   <Text style={styles.textoBoton2}>NUEVO RETO</Text>
-   </TouchableOpacity>
+<GoToButton style={styles.boton2} screenName="NuevoReto" />
+
 </View>
 
 
 <View style={styles.fila}>
-
-<TouchableOpacity style={styles.boton} onPress={this.viewMsg}>
-  <Text style={styles.textoBoton}>PERFIL </Text>
-  </TouchableOpacity>
-
-
-<TouchableOpacity style={styles.boton2} onPress={this.viewMsg}>
-    <Text style={styles.textoBoton2}>        CONTACTAR</Text>
- </TouchableOpacity>
 
 
 </View>
       </View>
     )
   }
+
+
 }

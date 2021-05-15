@@ -8,8 +8,8 @@ const styles = StyleSheet.create({
 imagen:{
 
 resizeMode: 'cover',
- height: 600,
-width: 1600
+ height: '85%',
+width: 1600,
 },
 fila:{
 
