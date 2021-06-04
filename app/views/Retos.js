@@ -1,100 +1,149 @@
 import React from 'react';
-import { View, StyleSheet, Image, Alert, TouchableOpacity, Text, Button, FlatList } from 'react-native';
-import { db } from '../config/db.js';
+import { View, ActivityIndicator, TouchableOpacity, Text, StatusBar, TextInput, Dimensions, Alert, ScrollView } from 'react-native';
+import { MaterialCommunityIcons } from "@expo/vector-icons"
+import { RFValue } from "react-native-responsive-fontsize"
+import firebase from "firebase"
+import "firebase/firestore"
 
-const styles = StyleSheet.create({
-  boton: {
-    left:'10%',
-   justifyContent: 'center',
-    alignItems: 'flex-start',
+import { Colors } from "../config/colors";
+import { firebaseConfig } from "../config/db"
 
-  },
-
-  textoBoton:{
-
-    color:'#ffffff',
-    fontSize: 14,
-
-  },
-  boton2:{
-  left:'90%',
-  height:'50%',
-   justifyContent: 'center',
-    alignItems: 'center',
-  },
-  textoBoton2:{
-
-    color:'#ffffff',
-    fontSize: 14,
-
-  },
-fila:{
-  height:'25%',
-  bottom:'90%',
-  flexDirection: 'row',
-  alignItems: 'center',
-  borderColor: '#ffffff',
-  borderBottomWidth:1,
-  backgroundColor: '#1590F2',
-  justifyContent: 'center'
+if (firebase.apps.length === 0) {
+  firebase.initializeApp(firebaseConfig)
 }
 
-})
-let sitios = [];
+const firestore = firebase.firestore()
 
-export class Retos extends React.Component{
-  componentDidMount(){
-      db.collection("sitios").get().then((querySnapshot) => {
-        querySnapshot.forEach((doc) => {
-          sitios.push({"key":doc.id, "value":doc.data()});
-        });
-        this.setState({sitios:sitios, loading: false});
-      });
-    }
+const height = Dimensions.get('window').height;
 
+export default class Evolucion extends React.Component {
 
   state = {
-    sitios: [],
-    loading: true
+    indicator: false,
+    nombre: '',
+    detalle: '',
+    categoria: '',
+    tiempo: '',
+    periodicidad: '',
+    completado: ''
   }
 
-renderItem = data =>
-<View style={styles.fila}>
-<TouchableOpacity styles={styles.boton}>
-<Text style={styles.textoBoton2}> {data.item.value.nombre}  </Text>
-</TouchableOpacity>
-</View>
+  retosRef = firestore.collection('Retos')
+  submit = async () => {
+    const { nombre, detalle, categoria, tiempo, periodicidad, completado } = this.state;
+    if (!(nombre && detalle && categoria && tiempo && periodicidad && completado)) {
+      alert("Uno o mas campos falta por rellenar")
+      return;
+    }
+    const body = {
+      nombre, detalle, categoria, tiempo, periodicidad, completado
+    }
 
-render(){
+    try {
+      this.setState({ indicator: true })
+      await this.retosRef.add(body);
+      alert("Completado")
+    } catch (error) {
+      alert(error)
+    }
+    this.setState({ indicator: false })
+  }
 
-if(this.state.loading){
-  return(
-    <View>
-    <Text>Cargando </Text>
-    </View>
-  )
-}else{
-  return(
-  <View>
-  <FlatList
-  style={{
-    flex: 1,
-  }}
-  data={this.state.sitios}
-  renderItem={item => this.renderItem(item)}
-  keyExtractor={(item, index) => item.key}
-  />
-  </View>
-)
-}
+  render() {
+    return (
+      <>
+        <StatusBar backgroundColor={Colors.primary} barStyle="light-content" />
+        <View style={{ flex: 1, alignItems: "center", justifyContent: "center", width: "100%" }} >
 
+          {}
+          <View style={{ paddingLeft: RFValue(20, height), paddingRight: RFValue(20, height), justifyContent: "space-between", alignItems: "center", flexDirection: "row", position: "absolute", top: 0, left: 0, right: 0, height: RFValue(65, height), backgroundColor: Colors.primary }} >
+            <TouchableOpacity onPress={() => this.props.navigation.navigate('Evolucion')} >
+              <MaterialCommunityIcons name="arrow-left" size={RFValue(25, height)} color={Colors.white} />
+            </TouchableOpacity>
+            <Text style={{ color: Colors.white, fontSize: RFValue(25, height), marginRight: RFValue(100, height) }} >Nuevo Reto</Text>
+            <TouchableOpacity style={{ backgroundColor: Colors.blueLight }} >
+              <Text style={{ padding: RFValue(10, height), color: Colors.white, fontSize: RFValue(20, height) }} >INICIO</Text>
+            </TouchableOpacity>
+          </View>
 
+          {this.state.indicator ?
+            <View style={{ justifyContent: "center", alignItems: "center" }} >
+              <ActivityIndicator color={Colors.primary} size={RFValue(50, height)} />
+            </View> :
 
-return(
+            <ScrollView style={{ width: "100%", marginTop: RFValue(100, height) }} >
+              <View style={{ width: "100%", marginBottom: RFValue(20, height), alignItems: "center", flex: 1 }} >
+                <View style={{ width: "80%", alignItems: "flex-start" }} >
+                  <Text style={{ fontSize: RFValue(30, height), fontWeight: "bold" }} >Nuevo Reto</Text>
+                </View>
 
-  <View>
-  <Text>El reto ira aqui </Text>
-  </View>
-)
-}
+                <View style={{ marginTop: RFValue(20, height), flexDirection: "column", width: "80%", borderBottomColor: Colors.grey, borderBottomWidth: 1 }} >
+                  <Text style={{ fontSize: RFValue(19, height) }} >nombre</Text>
+                  <TextInput
+                    style={{ padding: RFValue(7, height), fontSize: RFValue(21, height) }}
+                    placeholder="Escribe tu nuevo reto"
+                    onChangeText={(value) => this.setState({ nombre: value })}
+                  />
+                </View>
+
+                <View style={{ marginTop: RFValue(15, height), flexDirection: "column", width: "80%", borderBottomColor: Colors.grey, borderBottomWidth: 1 }} >
+                  <Text style={{ fontSize: RFValue(19, height) }} >detalle</Text>
+                  <TextInput
+                    style={{ padding: RFValue(7, height), fontSize: RFValue(21, height) }}
+                    placeholder="Describe tu reto"
+                    onChangeText={(value) => this.setState({ detalle: value })}
+                  />
+                </View>
+
+                <View style={{ marginTop: RFValue(15, height), flexDirection: "column", width: "80%", borderBottomColor: Colors.grey, borderBottomWidth: 1 }} >
+                  <Text style={{ fontSize: RFValue(19, height) }} >categoria</Text>
+                  <TextInput
+                    style={{ padding: RFValue(7, height), fontSize: RFValue(21, height) }}
+                    placeholder="Cual es la categoria"
+                    onChangeText={(value) => this.setState({ categoria: value })}
+                  />
+                </View>
+
+                <View style={{ marginTop: RFValue(15, height), flexDirection: "column", width: "80%", borderBottomColor: Colors.grey, borderBottomWidth: 1 }} >
+                  <Text style={{ fontSize: RFValue(19, height) }} >tiempo</Text>
+                  <TextInput
+                    style={{ padding: RFValue(7, height), fontSize: RFValue(21, height) }}
+                    placeholder="Tiempo en dias que dura el reto"
+                    onChangeText={(value) => this.setState({ tiempo: value })}
+                  />
+                </View>
+
+                <View style={{ marginTop: RFValue(15, height), flexDirection: "column", width: "80%", borderBottomColor: Colors.grey, borderBottomWidth: 1 }} >
+                  <Text style={{ fontSize: RFValue(19, height) }} >periodicidad</Text>
+                  <TextInput
+                    style={{ padding: RFValue(7, height), fontSize: RFValue(21, height) }}
+                    placeholder="Cada cuanto avisa en dias"
+                    onChangeText={(value) => this.setState({ periodicidad: value })}
+                  />
+                </View>
+
+                <View style={{ marginTop: RFValue(15, height), flexDirection: "column", width: "80%", borderBottomColor: Colors.grey, borderBottomWidth: 1 }} >
+                  <Text style={{ fontSize: RFValue(19, height) }} >completado</Text>
+                  <TextInput
+                    style={{ padding: RFValue(7, height), fontSize: RFValue(21, height) }}
+                    placeholder="Completado"
+                    onChangeText={(value) => this.setState({ completado: value })}
+                  />
+                </View>
+
+                <View style={{ marginTop: RFValue(20, height), flexDirection: "row", width: "80%" }} >
+                  <TouchableOpacity onPress={() => this.submit()} style={{ paddingLeft: RFValue(15, height), paddingRight: RFValue(15, height), elevation: 7, flexDirection: "row", justifyContent: "center", alignItems: "center", backgroundColor: Colors.blueLight, borderRadius: RFValue(30, height) }} >
+                    <MaterialCommunityIcons name="content-save" size={RFValue(20, height)} color={Colors.white} />
+                    <Text style={{ padding: RFValue(12, height), color: Colors.white, fontSize: RFValue(20, height) }} >GUARDAR</Text>
+                  </TouchableOpacity>
+                </View>
+              </View>
+
+            </ScrollView>
+          }
+
+        </View>
+      </>
+    )
+  }
 }
